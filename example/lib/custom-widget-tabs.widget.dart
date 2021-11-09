@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -6,6 +8,7 @@ import 'screens.dart';
 
 class CustomWidgetExample extends StatefulWidget {
   final BuildContext menuScreenContext;
+
   CustomWidgetExample({Key key, this.menuScreenContext}) : super(key: key);
 
   @override
@@ -145,6 +148,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           },
           selectedIndex: _controller.index,
         ),
+        onItemSelected: (int value) {
+          log('onItemSelected $value');
+        },
       ),
     );
   }
