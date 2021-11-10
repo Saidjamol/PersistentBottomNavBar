@@ -589,8 +589,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   widget.popAllScreensOnTapOfSelectedTab ?? true,
               onItemSelected: widget.onItemSelected != null
                   ? (int index) {
-                      print("ITEM SELECTED CALLED");
-
                       if (_controller!.index != _previousIndex) {
                         _previousIndex = _controller!.index;
                       }
@@ -602,8 +600,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                       widget.onItemSelected!(index);
                     }
                   : (int index) {
-                      print("ITEM SELECTED CALLED");
-
                       if (_controller!.index != _previousIndex) {
                         _previousIndex = _controller!.index;
                       }
@@ -715,7 +711,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   }
 
   void popAllScreens() {
-    print("POPALLSCREENS CALLED");
     if (widget.popAllScreensOnTapOfSelectedTab!) {
       if (widget.items![_controller!.index]
                   .onSelectedTabPressWhenNoScreensPushed !=
