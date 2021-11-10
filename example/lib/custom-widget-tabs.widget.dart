@@ -127,6 +127,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
       ),
       body: PersistentTabView.custom(
         context,
+        items: _navBarsItems(),
         controller: _controller,
         screens: _buildScreens(),
         confineInSafeArea: true,
@@ -139,18 +140,18 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
-        customWidget: CustomNavBarWidget(
-          items: _navBarsItems(),
+        customWidget: (items, navEssentials) => CustomNavBarWidget(
+          items: items,
           onItemSelected: (index) {
-            setState(() {
-              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
-            });
+            if (navEssentials.items[index].onPressed != null) {
+              navEssentials.items[index]
+                  .onPressed(navEssentials.selectedScreenBuildContext);
+            } else {
+              navEssentials.onItemSelected(index);
+            }
           },
           selectedIndex: _controller.index,
         ),
-        onItemSelected: (int value) {
-          log('onItemSelected $value');
-        },
       ),
     );
   }

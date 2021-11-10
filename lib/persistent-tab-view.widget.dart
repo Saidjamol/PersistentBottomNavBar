@@ -133,13 +133,15 @@ class PersistentTabView extends PersistentTabViewBase {
   PersistentTabView.custom(
     this.context, {
     Key? key,
+    required List<PersistentBottomNavBarItem> items,
     required this.screens,
     this.controller,
     this.margin = EdgeInsets.zero,
     this.floatingActionButton,
-    required Widget customWidget,
+    required Widget Function(List<PersistentBottomNavBarItem>? items,
+            NavBarEssentials? navBarEssentials)
+        customWidget,
     required int itemCount,
-    required ValueChanged<int>? onItemSelected,
     this.resizeToAvoidBottomInset = false,
     this.bottomScreenMargin,
     this.selectedTabScreenContext,
@@ -153,11 +155,14 @@ class PersistentTabView extends PersistentTabViewBase {
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
+    bool popAllScreensOnTapOfSelectedTab = true,
+    PopActionScreensType popActionScreensType = PopActionScreensType.all,
     double navBarHeight = kBottomNavigationBarHeight,
   }) : super(
           key: key,
           context: context,
           screens: screens,
+          items: items,
           controller: controller,
           margin: margin,
           routeAndNavigatorSettings: routeAndNavigatorSettings,
@@ -174,9 +179,9 @@ class PersistentTabView extends PersistentTabViewBase {
           hideNavigationBar: hideNavigationBar,
           screenTransitionAnimation: screenTransitionAnimation,
           isCustomWidget: true,
-          popAllScreensOnTapOfSelectedTab: true,
+          popAllScreensOnTapOfSelectedTab: popAllScreensOnTapOfSelectedTab,
+          popActionScreens: popActionScreensType,
           decoration: NavBarDecoration(),
-          onItemSelected: onItemSelected,
           navBarHeight: navBarHeight,
         ) {
     assert(itemCount == screens.length,
@@ -234,7 +239,8 @@ class PersistentTabViewBase extends StatefulWidget {
   final EdgeInsets? margin;
 
   ///Custom navigation bar widget. To be only used when `navBarStyle` is set to `NavBarStyle.custom`.
-  final Widget? customWidget;
+  final Widget? Function(List<PersistentBottomNavBarItem>? items,
+      NavBarEssentials? navBarEssentials)? customWidget;
 
   ///If using `custom` navBarStyle, define this instead of the `items` property
   final int? itemCount;
@@ -377,23 +383,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   }
 
   Widget _buildScreen(int index) {
-    RouteAndNavigatorSettings _routeAndNavigatorSettings = widget
-            .isCustomWidget!
-        ? RouteAndNavigatorSettings(
-            defaultTitle: widget.routeAndNavigatorSettings!.defaultTitle,
-            initialRoute: widget.routeAndNavigatorSettings!.initialRoute,
-            navigatorKey:
-                widget.routeAndNavigatorSettings!.navigatorKeys == null
-                    ? null
-                    : widget.routeAndNavigatorSettings!
-                        .navigatorKeys![_controller!.index],
-            navigatorObservers:
-                widget.routeAndNavigatorSettings!.navigatorObservers,
-            onGenerateRoute: widget.routeAndNavigatorSettings!.onGenerateRoute,
-            onUnknownRoute: widget.routeAndNavigatorSettings!.onUnknownRoute,
-            routes: widget.routeAndNavigatorSettings!.routes,
-          )
-        : widget.items![index].routeAndNavigatorSettings;
+    RouteAndNavigatorSettings _routeAndNavigatorSettings =
+        widget.items![index].routeAndNavigatorSettings;
 
     if (widget.floatingActionButton != null) {
       return Stack(

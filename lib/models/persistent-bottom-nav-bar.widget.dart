@@ -20,7 +20,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final NavBarDecoration? navBarDecoration;
   final NavBarStyle? navBarStyle;
   final NeumorphicProperties? neumorphicProperties;
-  final Widget? customNavBarWidget;
+  final Widget? Function(List<PersistentBottomNavBarItem>? items, NavBarEssentials? navBarEssentials)? customNavBarWidget;
   final bool? confineToSafeArea;
   final bool? hideNavigationBar;
   final Function(bool, bool)? onAnimationComplete;
@@ -39,7 +39,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                     child: Container(
                       color: this.navBarEssentials!.backgroundColor,
                       height: this.navBarEssentials!.navBarHeight,
-                      child: this.customNavBarWidget,
+                      child: this.customNavBarWidget!.call(navBarEssentials!.items, navBarEssentials!),
                     ),
                   )
                 : Container(
@@ -52,7 +52,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                             : confineToSafeArea ?? true,
                         child: Container(
                             height: this.navBarEssentials!.navBarHeight,
-                            child: this.customNavBarWidget)),
+                            child: this.customNavBarWidget!.call(navBarEssentials!.items, navBarEssentials!))),
                   )
             : this.navBarStyle == NavBarStyle.style15 ||
                     this.navBarStyle == NavBarStyle.style16
@@ -170,7 +170,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       NavBarStyle? navBarStyle,
       double? horizontalPadding,
       NeumorphicProperties? neumorphicProperties,
-      Widget? customNavBarWidget,
+        Widget? Function(List<PersistentBottomNavBarItem>? items, NavBarEssentials? navBarEssentials)? customNavBarWidget,
       Function(int)? popAllScreensForTheSelectedTab,
       bool? popScreensOnTapOfSelectedTab,
       NavBarDecoration? navBarDecoration,
@@ -204,7 +204,7 @@ class PersistentBottomNavBar extends StatelessWidget {
 
   Widget? getNavBarStyle() {
     if (isCustomWidget!) {
-      return customNavBarWidget;
+      return customNavBarWidget!.call(navBarEssentials!.items, this.navBarEssentials!);
     } else {
       switch (navBarStyle) {
         case NavBarStyle.style1:
