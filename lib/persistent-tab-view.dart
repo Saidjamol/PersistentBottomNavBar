@@ -5,7 +5,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart' show CupertinoApp;
 import 'models/nested_will_pop_scope.dart';
 
 

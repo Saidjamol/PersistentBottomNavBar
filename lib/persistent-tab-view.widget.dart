@@ -190,7 +190,7 @@ class PersistentTabView extends PersistentTabViewBase {
         routeAndNavigatorSettings.navigatorKeys == null ||
             routeAndNavigatorSettings.navigatorKeys != null &&
                 routeAndNavigatorSettings.navigatorKeys!.length !=
-                    items!.length,
+                    items.length,
         "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
   }
 }
@@ -376,7 +376,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       }
     });
     if (widget.selectedTabScreenContext != null) {
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         widget.selectedTabScreenContext!(_contextList[_controller!.index]);
       });
     }
